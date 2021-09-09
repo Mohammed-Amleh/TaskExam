@@ -22,11 +22,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TomorrowFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TomorrowFragment extends Fragment {
 
     CountryViewModel weatherViewModel;
@@ -49,8 +44,15 @@ public class TomorrowFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        tv_date = v.findViewById(R.id.tv_date);
+        tv_temp = v.findViewById(R.id.tv_temp);
+        tv_pressure = v.findViewById(R.id.tv_pressure);
+        tv_humidity = v.findViewById(R.id.tv_humidity);
+
+        iv_sun_photo = v.findViewById(R.id.iv_country_photo);
+
 
         weatherViewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
         weatherViewModel.getMutableWeatherStates().observe(getViewLifecycleOwner(), new Observer<List<Weather>>() {
@@ -74,5 +76,4 @@ public class TomorrowFragment extends Fragment {
 //        iv_sun_photo
     }
 
-}
 }
