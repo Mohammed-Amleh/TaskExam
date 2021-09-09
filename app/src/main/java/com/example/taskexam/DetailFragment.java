@@ -14,8 +14,11 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.taskexam.Model.Country;
 import com.example.taskexam.ViewModel.CountryViewModel;
 
@@ -31,6 +34,7 @@ public class DetailFragment extends Fragment {
     private CountryViewModel sharedViewModel;
 
     private TextView tv_Name,tv_region_name,tv_capital_name,tv_population_name;
+    private ImageView iv_country_photo;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -81,28 +85,34 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         sharedViewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
-
 
         tv_Name = view.findViewById(R.id.tv_Name);
         tv_capital_name = view.findViewById(R.id.tv_capital_name);
         tv_region_name = view.findViewById(R.id.tv_region_name);
         tv_population_name = view.findViewById(R.id.tv_population_name);
-
+        iv_country_photo = view.findViewById(R.id.iv_country_photo);
 
         sharedViewModel.getCountry().observe(getViewLifecycleOwner(), new Observer<Country>() {
             @Override
             public void onChanged(Country country) {
+
                 updateUI(country);
+
             }
         });
-    }
 
+
+    }
     private void updateUI(Country country) {
         tv_Name.setText(country.getName());
         tv_capital_name.setText(country.getCapital());
         tv_region_name.setText(country.getRegion());
         tv_population_name.setText(country.getPopulation());
+        Glide.with(this).load(country.getImageFlag())
+                .placeholder(R.drawable.ic_launcher_background)
+                .apply(RequestOptions.centerCropTransform())
+                .into(iv_country_photo);
+
     }
 }

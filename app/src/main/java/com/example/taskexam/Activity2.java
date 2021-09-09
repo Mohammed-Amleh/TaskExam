@@ -1,46 +1,77 @@
 package com.example.taskexam;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.taskexam.Model.Country;
+import com.example.taskexam.ViewModel.CountryViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class Activity2 extends AppCompatActivity {
 
-    TextView tv_Name;
-    TextView tv_region_name;
-    TextView tv_population_name;
-    TextView tv_capital_name;
 
-    Button btn_Details;
+    private BottomNavigationView nav_bottom;
+
+    private CountryViewModel viewModel;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
-        tv_Name= findViewById(R.id.tv_Name);
-        tv_region_name = findViewById(R.id.tv_region_name);
-        tv_population_name = findViewById(R.id.tv_population_name);
-        tv_capital_name = findViewById(R.id.tv_capital_name);
 
-        btn_Details = findViewById(R.id.btn_Details);
+        nav_bottom = findViewById(R.id.nav_bottom);
 
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewModel = new ViewModelProvider(this).get(CountryViewModel.class);
 
        Intent i =  getIntent();
-      Country country = (Country) i.getSerializableExtra("country");
-        Toast.makeText(this, "ssss", Toast.LENGTH_SHORT).show();
+       Country country = (Country) i.getSerializableExtra("country");
+       viewModel.seCountry(country);
 
 
-        tv_Name .setText(country.getName());
-        tv_region_name.setText(country.getRegion());
-        tv_population_name.setText(country.getPopulation());
-        tv_capital_name.setText(country.getCapital());
+
+
+        //Default Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new DetailFragment())
+                .commit();
+
+        nav_bottom.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+                Fragment fragment = null;
+                switch (item.getItemId()){
+                    case R.id.nav_detail:
+                        fragment = new DetailFragment();
+
+                        break;
+                    case R.id.nav_weather:
+                        fragment = new MoreDetailFragment();
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment)
+                        .commit();
+                return true;
+            }
+        });
 
 
 

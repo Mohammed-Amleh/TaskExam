@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,8 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.SearchView;
 
 import com.example.taskexam.Adpaters.CountryAdapter;
 import com.example.taskexam.Model.Country;
@@ -25,6 +32,7 @@ import com.example.taskexam.ViewModel.CountryViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,7 +85,10 @@ public class MasterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_master, container, false);
+
+        View v =  inflater.inflate(R.layout.fragment_master, container, false);
+
+        return v;
     }
 
     @Override
@@ -92,6 +103,7 @@ public class MasterFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL));
+
 
 
 
@@ -120,14 +132,16 @@ public class MasterFragment extends Fragment {
             public void onItemClick(Country country) {
 
                 Intent intent  = new Intent(getActivity(),Activity2.class);
-
                 intent.putExtra("country",country);
 
-                getActivity().startActivity(intent);
+                startActivity(intent);
+
+
 
 
             }
         });
 
     }
+
 }
